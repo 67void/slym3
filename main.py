@@ -1,7 +1,6 @@
 import pygame
 import pygame_widgets
 from pygame_widgets.slider import Slider
-from pygame_widgets.textbox import TextBox
 
 pygame.init()
 
@@ -40,9 +39,8 @@ bg = pygame.image.load("main_menu.png")
 
 # settings
 
-mv = font.render('Music Volume', True, lime)
-mvs = Slider(window, 230, 430, 100, 10, min=0, max=100, step=1)
-output = TextBox(window, 475, 200, 50, 50, fontSize=30)
+mv = smallfont.render('Music ', True, lime)
+mvs = Slider(window,500, 230, 100, 15, min=0, max=100, step=1, initial=100, handleColour=(0, 0, 102), handleRadius=5, colour=(0, 153, 51))
 
 # high scores text
 
@@ -132,8 +130,6 @@ def settings():
         mx, my = pygame.mouse.get_pos()
         back = pygame.Rect(845, 0, 75, 75)
 
-        output.disable()
-
         if back.collidepoint((mx, my)):
             if click:
                 main_menu()
@@ -145,10 +141,10 @@ def settings():
                 if event.button == 1:
                     click = True
 
-        output.setText(mvs.getValue())
         pygame.mixer.music.set_volume(mvs.getValue() * 0.01)
 
         window.blit(b, (845, 0))
+        window.blit(mv, (310, 220))
         pygame_widgets.update(pygame.event.get())
         pygame.display.update()
 
