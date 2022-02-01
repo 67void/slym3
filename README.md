@@ -5,5 +5,5 @@ PyGame Project
 
 ###Packages Used:
 * Pygame
-* Pygame-widgets
+* Pygame-widgets (https://pygamewidgets.readthedocs.io/en/latest)
 
