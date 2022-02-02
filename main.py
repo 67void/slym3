@@ -8,8 +8,10 @@ pygame.init()
 h = 920
 w = 550
 window = pygame.display.set_mode((h, w))
-mainClock = pygame.time.Clock()
-
+clock = pygame.time.Clock()
+pygame.display.set_caption('SLYм3')
+icon = pygame.image.load('icon.jpeg')
+pygame.display.set_icon(icon)
 pygame.mixer.init()
 pygame.mixer.music.load('theme.ogg')
 pygame.mixer.music.play(loops=-1)
@@ -40,7 +42,8 @@ bg = pygame.image.load("main_menu.png")
 # settings
 
 mv = smallfont.render('Music ', True, lime)
-mvs = Slider(window,500, 230, 100, 15, min=0, max=100, step=1, initial=100, handleColour=(0, 0, 102), handleRadius=5, colour=(0, 153, 51))
+mvs = Slider(window, 500, 230, 100, 15, min=0, max=100, step=1, initial=100, handleColour=(0, 0, 102), handleRadius=5,
+             colour=(0, 153, 51))
 
 # high scores text
 
@@ -87,7 +90,7 @@ def main_menu():
         window.blit(q, (845, 0))
 
         pygame.display.update()
-        mainClock.tick(60)
+        clock.tick(60)
 
 
 def game():
@@ -103,7 +106,8 @@ def game():
 
         if lvl_1.collidepoint((mx, my)):
             if click:
-                pass  # lvl_1()
+                pass
+
         if back.collidepoint((mx, my)):
             if click:
                 main_menu()
@@ -119,7 +123,7 @@ def game():
         window.blit(b, (845, 0))
 
         pygame.display.update()
-        mainClock.tick(60)
+        clock.tick(60)
 
 
 def settings():
@@ -171,7 +175,7 @@ def highscores():
         window.blit(b, (845, 0))
 
         pygame.display.update()
-        mainClock.tick(60)
+        clock.tick(60)
 
 
 main_menu()
