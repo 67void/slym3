@@ -1,12 +1,13 @@
 import pygame
 import pygame_widgets
 from pygame_widgets.slider import Slider
+import level1
 
 pygame.init()
 
 # game win size
-h, w = 920, 550
-window = pygame.display.set_mode((h, w))
+w, h = 920, 550
+window = pygame.display.set_mode((w, h))
 clock = pygame.time.Clock()
 pygame.display.set_caption('SLYм3')
 icon = pygame.image.load('icon.jpeg')
@@ -15,6 +16,7 @@ pygame.mixer.init()
 pygame.mixer.music.load('theme.ogg')
 pygame.mixer.music.play(loops=-1)
 bg = pygame.image.load("main_menu.png")
+
 # colors
 
 white = (255, 255, 255)
@@ -33,22 +35,25 @@ largefont = pygame.font.SysFont('century gothic', 60)
 
 g = font.render('    play', True, green)
 s = smallfont.render('   settings', True, lime)
-h = smallfont.render('   highscores', True, lime)
+w = smallfont.render('   highscores', True, lime)
 q = largefont.render('x', True, white)
 b = largefont.render('<', True, white)
-
 
 # settings
 
 mv = smallfont.render('Music ', True, lime)
 mvs = Slider(window, 500, 230, 100, 15, min=0, max=100, step=1, initial=100, handleColour=(0, 0, 102), handleRadius=5,
              colour=(0, 153, 51))
+sfx = smallfont.render('Sound Effects', True, lime)
+sfxs = Slider(window, 500, 250, 100, 15, min=0, max=100, step=1, initial=100, handleColour=(0, 0, 102), handleRadius=5,
+              colour=(0, 0, 51))
 
 # high scores text
 
 # game menu text
 l_1 = font.render(' Level 1', True, white)
 l_2 = font.render(' Level 2', True, white)
+slime = pygame.mixer.Sound('slime.wav')
 
 
 # functions
@@ -87,7 +92,7 @@ def main_menu():
                     click = True
         window.blit(g, (375, 295))
         window.blit(s, (230, 430))
-        window.blit(h, (506, 430))
+        window.blit(w, (506, 430))
         window.blit(q, (845, 0))
 
         pygame.display.update()
@@ -108,63 +113,7 @@ def game():
 
         if lvl_1.collidepoint((mx, my)):
             if click:
-                def lvl1():
-
-                    # this class defines all the properties and functions of our player
-                    class player():
-                        def __init__(self, x, y, width, height):
-                            self.x = x
-                            self.y = y
-                            self.width = width
-                            self.height = height
-                            self.vel = 5
-                            self.isJump = False
-                            self.jumpCount = 10
-                            self.left = False
-                            self.right = False
-                            self.standing = True
-                            self.walkCount = 0
-
-                        def draw(self, x, y, width, height):
-                            pygame.draw.rect(window, (225, 0, 0), (x, y, width, height))
-
-                    player1 = player(700, 500, 20, 50)
-
-                    def redrawGameWindow():
-                        window.blit(bg, (0, 0))
-                        player1.draw(player1.x, player1.y, player1.width, player1.height)
-                        pygame.display.update()
-
-                    def game():
-                        run = True
-                        # the main loop (keeps the game running till its closed)
-                        while run:
-                            clock.tick(27)
-                            for event in pygame.event.get():
-                                if event.type == pygame.QUIT:
-                                    run = False
-                            keys = pygame.key.get_pressed()
-                            if keys[pygame.K_LEFT] and player1.x > player1.vel:
-                                player1.x -= player1.vel
-                            elif keys[pygame.K_RIGHT] and player1.x < 920 - player1.width - player1.vel:
-                                player1.x += player1.vel
-                            if not player1.isJump:
-                                if keys[pygame.K_SPACE]:
-                                    player1.isJump = True
-                            else:
-                                if player1.jumpCount >= -10:
-                                    neg = 1
-                                    if player1.jumpCount < 0:
-                                        neg = -1
-                                    player1.y -= (player1.jumpCount ** 2) * 0.5 * neg
-                                    player1.jumpCount -= 1
-                                else:
-                                    player1.isJump = False
-                                    player1.jumpCount = 10
-                            redrawGameWindow()
-                    game()
-                lvl1()
-
+                level1.lvl_1()
         if back.collidepoint((mx, my)):
             if click:
                 main_menu()
@@ -208,10 +157,11 @@ def settings():
                     click = True
 
         pygame.mixer.music.set_volume(mvs.getValue() * 0.01)
-
+        pygame.mixer.Sound.set_volume(slime, sfxs.getValue() * 0.01)
 
         window.blit(b, (845, 0))
         window.blit(mv, (310, 220))
+        window.blit(sfx, (240, 250))
         pygame_widgets.update(pygame.event.get())
         pygame.display.update()
 
