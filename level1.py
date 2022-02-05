@@ -1,13 +1,14 @@
 import pygame
 
 
-def lvl_1():
+def lvl_1(sfx):
     pygame.init()
     win = pygame.display.set_mode((920, 550))
-    pygame.display.set_caption('Game')
+    pygame.display.set_caption('SLYм3')
     clock = pygame.time.Clock()
     bg = pygame.image.load('background1.jpg')
     slime = pygame.mixer.Sound('slime.wav')
+    pygame.mixer.Sound.set_volume(slime, sfx)
 
     # this class defines all the properties and functions of our player
     class player:
@@ -38,6 +39,7 @@ def lvl_1():
     # the main loop (keeps the game running till its closed)
     while run:
         clock.tick(27)
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
