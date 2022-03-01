@@ -2,6 +2,7 @@ import pygame
 import pygame_widgets
 from pygame_widgets.slider import Slider
 import level1
+# import test
 import sys
 import time
 
@@ -15,10 +16,10 @@ pygame.display.set_caption('SLYм3')
 icon = pygame.image.load('icon.jpeg')
 pygame.display.set_icon(icon)
 pygame.mixer.init()
-pygame.mixer.music.load('theme.ogg')
+pygame.mixer.music.load('Arcane OST ENEMY (League of Legends) Orchestral Remix.ogg')
 pygame.mixer.music.play(loops=-1)
 bg = pygame.image.load("main_menu.png")
-bgs = pygame.image.load("settings_temp.jpg")
+bgs = pygame.image.load("settings.jpg")
 bgh = pygame.image.load("highscores_temp.jpg")
 
 # colors list
@@ -29,6 +30,7 @@ black = (0, 0, 0)
 green = (102, 255, 102)
 lime = (204, 255, 153)
 red = (255, 0, 0)
+blue = (51, 102, 255)
 
 # fonts list
 
@@ -55,27 +57,32 @@ def slide(stype, x, y):
             window.blit(slide_1, (x, y))
     if stype == "slide_2":
         if x <= mx <= x + 75 and y <= my <= y + 75:
-            slide_2 = pygame.surface.Surface((75, 75))
+            slide_2 = pygame.surface.Surface((65, 65))
             pygame.surface.Surface.set_alpha(slide_2, 75)
             window.blit(slide_2, (x, y))
+    if stype == "slide_3":
+        if x <= mx <= x + 150 and y <= my <= y + 40:
+            slide_1 = pygame.surface.Surface((150, 40))
+            pygame.surface.Surface.set_alpha(slide_1, 75)
+            window.blit(slide_1, (x, y))
 
 
 # settings
-mvs = Slider(window, 500, 230, 100, 15, min=0, max=100, step=1, initial=100, handleColour=(0, 0, 102), handleRadius=5,
-             colour=(0, 153, 51))
-sfxs = Slider(window, 500, 250, 100, 15, min=0, max=100, step=1, initial=100, handleColour=(0, 0, 102), handleRadius=5,
-              colour=(0, 0, 51))
+mvs = Slider(window, 500, 230, 100, 15, min=0, max=100, step=1, initial=100, handleColour=blue, handleRadius=5,
+             colour=lime)
+sfxs = Slider(window, 500, 250, 100, 15, min=0, max=100, step=1, initial=100, handleColour=blue, handleRadius=5,
+              colour=lime)
 
-# high scores text
-
-# game menu text
-slime = pygame.mixer.Sound('slime.wav')
+# game menu
+jump = pygame.mixer.Sound('jump.wav')
 
 
 # functions
 def start():
-    rt = ultrafont.render("SLYм3", True, (255, 0, 0))
+    rt = ultrafont.render("SLYм3", True, red)
+    t = smallfont.render(" Hit ↑ to skip ", True, (150, 0, 0))
     text_rect = rt.get_rect(center=(w / 2, h / 2))
+    tr = t.get_rect(center=(w / 2, h / 2 + 150))
     # Show some texts fade in/out
 
     FADE_IN_TIME = 5
@@ -95,6 +102,10 @@ def start():
             if event.type == pygame.QUIT:
                 pygame.quit()  # Exit the main loop
                 sys.exit()
+
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_UP:
+                    main_menu()
 
         # Update the state
         state_time = time.time() - last_state_change
@@ -123,11 +134,14 @@ def start():
             main_menu()
 
         surf2 = pygame.surface.Surface((text_rect.width, text_rect.height))
+        surf3 = pygame.surface.Surface((tr.width, tr.height))
         surf2.set_alpha(255 * alpha)
 
         window.fill((0, 0, 0))
         surf2.blit(rt, (0, 0))
+        surf3.blit(t, (0, 0))
         window.blit(surf2, text_rect)
+        window.blit(surf3, tr)
 
         pygame.display.flip()
         clock.tick(60)
@@ -142,19 +156,16 @@ def main_menu():
         mx, my = pygame.mouse.get_pos()
 
         d_txt('    play', font, green, window, 375, 295)
-        d_txt('    settings', smallfont, lime, window, 230, 430)
-        d_txt('    highscores', smallfont, lime, window, 506, 430)
+        d_txt('       settings', smallfont, lime, window, 375, 430)
         d_txt(' x', largefont, white, window, 845, 0)
 
         g_button = pygame.Rect(375, 295, 150, 45)
-        s_button = pygame.Rect(230, 430, 150, 40)
-        h_button = pygame.Rect(506, 430, 150, 40)
+        s_button = pygame.Rect(375, 430, 150, 40)
         q_button = pygame.Rect(845, 0, 75, 75)
 
         slide("slide_1", 375, 295)
-        slide("slide_1", 230, 430)
-        slide("slide_1", 506, 430)
-        slide("slide_2", 845, 0)
+        slide("slide_3", 375, 430)
+        slide("slide_2", 845, 10)
 
         if g_button.collidepoint((mx, my)):
             if click:
@@ -162,9 +173,6 @@ def main_menu():
         if s_button.collidepoint((mx, my)):
             if click:
                 settings()
-        if h_button.collidepoint((mx, my)):
-            if click:
-                highscores()
         if q_button.collidepoint((mx, my)):
             if click:
                 quit()
@@ -188,7 +196,7 @@ def game():
         window.blit(bg, (0, 0))
         mx, my = pygame.mouse.get_pos()
 
-        d_txt('<', largefont, white, window, 845, 0)
+        d_txt(' <', largefont, white, window, 845, 0)
         d_txt(' Level 1', font, white, window, 375, 295)
         d_txt(' Level 2', font, white, window, 375, 355)
 
@@ -198,7 +206,7 @@ def game():
 
         slide("slide_1", 375, 295)
         slide("slide_1", 375, 355)
-        slide("slide_2", 845, 0)
+        slide("slide_2", 850, 5)
 
         if lvl_1.collidepoint((mx, my)):
             if click:
@@ -231,12 +239,12 @@ def settings():
         window.blit(bgs, (0, 0))
         mx, my = pygame.mouse.get_pos()
 
-        d_txt('<', largefont, white, window, 845, 0)
+        d_txt(' <', largefont, white, window, 845, 0)
         d_txt('Music ', smallfont, lime, window, 310, 220)
         d_txt('Sound Effects', smallfont, lime, window, 240, 250)
 
         back = pygame.Rect(845, 0, 75, 75)
-        slide("slide_2", 845, 0)
+        slide("slide_2", 850, 5)
 
         if back.collidepoint((mx, my)):
             if click:
@@ -250,38 +258,10 @@ def settings():
                     click = True
 
         pygame.mixer.music.set_volume(mvs.getValue() * 0.01)
-        pygame.mixer.Sound.set_volume(slime, sfxs.getValue() * 0.01)
+        pygame.mixer.Sound.set_volume(jump, sfxs.getValue() * 0.01)
 
         pygame_widgets.update(pygame.event.get())
         pygame.display.update()
-
-
-def highscores():
-    running = True
-    click = False
-
-    while running:
-        window.blit(bgh, (0, 0))
-        mx, my = pygame.mouse.get_pos()
-
-        d_txt('<', largefont, white, window, 845, 0)
-
-        back = pygame.Rect(845, 0, 75, 75)
-        slide("slide_2", 845, 0)
-
-        if back.collidepoint((mx, my)):
-            if click:
-                main_menu()
-
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                if event.button == 1:
-                    click = True
-
-        pygame.display.update()
-        clock.tick(60)
 
 
 start()
