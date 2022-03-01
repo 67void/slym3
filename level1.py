@@ -8,8 +8,14 @@ def lvl_1(sfx):
     pygame.display.set_caption('SLYм3')
     clock = pygame.time.Clock()
     bg = pygame.image.load('background1.jpg')
-    slime = pygame.mixer.Sound('slime.wav')
-    pygame.mixer.Sound.set_volume(slime, sfx)
+
+# sound effects
+
+    jump = pygame.mixer.Sound('jump.wav')
+    shoot = pygame.mixer.Sound('bullet.wav')
+    death = pygame.mixer.Sound('death.wav')
+
+    pygame.mixer.Sound.set_volume(jump, sfx)
     
     pygame.init()
     win = pygame.display.set_mode((920, 550))
@@ -36,6 +42,7 @@ def lvl_1(sfx):
             if not self.isJump:
                 if keys[pygame.K_SPACE]:
                     self.isJump=True
+                    pygame.mixer.Sound.play(jump)
             else:
                 if self.jumpCount>=-10:
                     neg=1
@@ -188,6 +195,7 @@ def lvl_1(sfx):
                 bullets.pop(bullets.index(i))
         keys=pygame.key.get_pressed()
         if keys[pygame.K_q] and cooldown==0:
+            pygame.mixer.Sound.play(shoot)
             if player1.left:
                 facing=-1
                 #tomoveleft
@@ -199,10 +207,12 @@ def lvl_1(sfx):
                 bullets.append(bullet(round(player1.x+player1.width//2),round(player1.y+player1.height//2),6,(0,0,0),facing))
             cooldown=1
         if keys[pygame.K_LEFT] and player1.x>player1.vel:
+
             player1.left=True
             player1.right=False
             player1.x-=player1.vel
         elif keys[pygame.K_RIGHT] and player1.x<920-player1.width-player1.vel:
+
             player1.left=False
             player1.right=True
             player1.x+=player1.vel
