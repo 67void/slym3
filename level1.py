@@ -164,6 +164,7 @@ def lvl_1(sfx):
                     if abs(i.x-j.x)<50 and j.dodge==False and i.x>j.x and i.y>520:
                         enemies.pop(enemies.index(j))
                         bullets.pop(bullets.index(i))
+                        break
 
                 else:
                     if (100<abs(i.x-j.x)<130) and i.x<j.x and i.y>520:
@@ -174,6 +175,7 @@ def lvl_1(sfx):
                     if abs(i.x-j.x)<50 and j.dodge==False and i.x<j.x and i.y>520:
                         enemies.pop(enemies.index(j))
                         bullets.pop(bullets.index(i))
+                        break
                         #bullets.pop(bullets.index(i))
 
 
