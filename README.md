@@ -24,6 +24,15 @@ pip install pygame-widgets
 ```
 
 ------------
+### To Be Added
+* New backgrounds 
+* slime sprites  
+* Scores and saving
+* End card
+* More attacks
+* Pause menu
+
+------------
 
 ### Packages Used
 * [Pygame]( https://www.pygame.org/docs/ "Pygame")
