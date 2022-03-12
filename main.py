@@ -2,7 +2,7 @@ import pygame
 import pygame_widgets
 from pygame_widgets.slider import Slider
 import level1
-import level2
+#import level2
 import sys
 import time
 
@@ -270,8 +270,8 @@ def game():
 
         if lvl_2.collidepoint((mx, my)):
             if click:
-                level2.lvl_2()
-
+                #level2.lvl_2()
+                pass
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
