@@ -2,7 +2,7 @@ import pygame
 import pygame_widgets
 from pygame_widgets.slider import Slider
 import level1
-# import test
+import level2
 import sys
 import time
 
@@ -20,7 +20,7 @@ pygame.mixer.music.load('Arcane OST ENEMY (League of Legends) Orchestral Remix.o
 pygame.mixer.music.play(loops=-1)
 bg = pygame.image.load("main_menu.png")
 bgs = pygame.image.load("settings.jpg")
-bgh = pygame.image.load("highscores_temp.jpg")
+# bgh = pygame.image.load("highscores_temp.jpg")
 
 # colors list
 
@@ -113,14 +113,14 @@ def start():
         if state == ST_FADEIN:
             if state_time >= FADE_IN_TIME:
                 state = ST_FADEOUT
-                # state_time = max(0, min(state_time - FADE_IN_TIME, 1))
+
                 state_time -= FADE_IN_TIME
                 last_state_change = time.time() - state_time
 
         elif state == ST_FADEOUT:
             if state_time >= FADE_OUT_TIME:
                 state = ST_FADEIN
-                # state_time = max(0, min(state_time - FADE_OUT_TIME, 1))
+
                 state_time -= FADE_OUT_TIME
                 last_state_change = time.time() - state_time
 
@@ -188,6 +188,54 @@ def main_menu():
         clock.tick(60)
 
 
+def settings():
+    running = True
+    click = False
+
+    while running:
+        window.blit(bgs, (0, 0))
+        mx, my = pygame.mouse.get_pos()
+
+        d_txt(' <', largefont, white, window, 845, 0)
+        d_txt('Music ', smallfont, lime, window, 310, 220)
+        d_txt('Sound Effects', smallfont, lime, window, 240, 250)
+        d_txt('Shoot (Light Attack)', smallfont, lime, window, 200, 280)
+        # d_txt('Q', smallfont, lime, window, 500, 280)
+        # d_txt('Space Bar', smallfont, lime, window, 550, 280)
+
+        back = pygame.Rect(845, 0, 75, 75)
+        # q = pygame.Rect(500, 280, 10, 10)
+        # space = pygame.Rect(550, 280, 10, 10)
+
+        slide("slide_2", 850, 5)
+        # slide("slide_2", 500, 280)
+        # slide("slide_2", 580, 280)
+
+        if back.collidepoint((mx, my)):
+            if click:
+                main_menu()
+        # if q.collidepoint((mx, my)):
+        #    if click:
+        #        shot = 0
+        #        print(shot)
+        # if space.collidepoint((mx, my)):
+        #    if click:
+        #        shot = 1
+        #        print(shot)
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if event.button == 1:
+                    click = True
+
+        pygame.mixer.music.set_volume(mvs.getValue() * 0.01)
+
+        pygame_widgets.update(pygame.event.get())
+        pygame.display.update()
+
+
 def game():
     running = True
     click = False
@@ -211,14 +259,18 @@ def game():
         if lvl_1.collidepoint((mx, my)):
             if click:
                 sfx = sfxs.getValue() * 0.01
-                level1.lvl_1(sfx)
+                # shot = 0
+                # print(shot)
+                # print(sfx)
+                level1.lvl_1(sfx)  # shot)
+
         if back.collidepoint((mx, my)):
             if click:
                 main_menu()
 
         if lvl_2.collidepoint((mx, my)):
             if click:
-                pass
+                level2.lvl_2()
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -229,39 +281,6 @@ def game():
 
         pygame.display.update()
         clock.tick(60)
-
-
-def settings():
-    running = True
-    click = False
-
-    while running:
-        window.blit(bgs, (0, 0))
-        mx, my = pygame.mouse.get_pos()
-
-        d_txt(' <', largefont, white, window, 845, 0)
-        d_txt('Music ', smallfont, lime, window, 310, 220)
-        d_txt('Sound Effects', smallfont, lime, window, 240, 250)
-
-        back = pygame.Rect(845, 0, 75, 75)
-        slide("slide_2", 850, 5)
-
-        if back.collidepoint((mx, my)):
-            if click:
-                main_menu()
-
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                if event.button == 1:
-                    click = True
-
-        pygame.mixer.music.set_volume(mvs.getValue() * 0.01)
-        pygame.mixer.Sound.set_volume(jump, sfxs.getValue() * 0.01)
-
-        pygame_widgets.update(pygame.event.get())
-        pygame.display.update()
 
 
 start()
